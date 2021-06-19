@@ -44,6 +44,9 @@ public class BinaryTree {
         binaryTree.infixOrderSearch(4);
         //后序遍历查找
         binaryTree.postOrderSearch(4);
+
+        root.delNode(2);
+        root.preOrder();
     }
 
     public void setRoot(HeroNode root) {
@@ -109,6 +112,23 @@ public class BinaryTree {
             return null;
         }
     }
+
+    //删除节点
+    public void delNode(int no) {
+        if (root != null) {
+            //如果只有一个root节点, 这里立即判断root是不是就要删除的节点
+            if (root.getNo() == no) {
+                root = null;
+            } else {
+                //递归删除
+                root.delNode(no);
+            }
+        } else {
+            System.out.println("树空, 不能删除!");
+        }
+
+    }
+
 }
 
 //先创建HeroNode节点
@@ -161,6 +181,40 @@ class HeroNode {
     public HeroNode(int no, String name) {
         this.no = no;
         this.name = name;
+    }
+
+
+    //递归删除节点
+    //1. 如果删除的节点是叶子节点, 则删除该节点
+    //2. 如果删除的节点是非叶子节点, 则删除该叶子
+    public void delNode(int no) {
+        /**
+         * 思路:
+         * 1. 因为我们的二叉树是单向的, 所以我们是判断当前节点的子节点是否是要删除的节点, 而不能判断当前这个节点是不是需要删除的节点.
+         * 2. 如果当前节点的左子节点不为空, 并且左子节点就是要删除的节点, 就将this.left = null; 并且return(结束递归删除)
+         * 3. 如果当前节点的右子节点不为空, 并且右子节点就是要删除的节点, 就将this.right = null; 并且return(结束递归删除)
+         * 4. 如果第2和第3步没有删除节点, 那么我们就需要向左子树进行递归删除
+         * 5. 如果第4步也没有删除节点, 则应当向右子树进行递归删除
+         */
+
+        if (this.left != null && this.left.no == no) {
+            this.left = null;
+            return;
+        }
+        if (this.right != null && this.right.no == no) {
+            this.right = null;
+            return;
+        }
+
+        //向左递归
+        if (this.left != null) {
+            this.left.delNode(no);
+        }
+        //向右递归
+        if (this.right != null) {
+            this.right.delNode(no);
+        }
+
     }
 
     //编写前序遍历的方法
