@@ -76,6 +76,30 @@ class Node {
             this.right.infixOrder();
         }
     }
+
+    /**
+     * 查找节点
+     *
+     * @param value
+     * @return
+     */
+    public Node search(int value) {
+        if (value == this.value) {//找到就是该节点
+            return this;
+        } else if (value < this.value) {//如果查找的值小于当前节点, 向左子树递归查找
+            //如果左子树节点为空
+            if (this.left == null) {
+                return null;
+            }
+            return this.left.search(value);
+        } else {//如果查找的值不小于当前节点, 向右子树递归查找
+            if (this.right == null) {
+                return null;
+            }
+            return this.right.search(value);
+
+        }
+    }
 }
 
 //创建二叉树
